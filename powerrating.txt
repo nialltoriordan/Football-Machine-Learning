@@ -1,0 +1,134 @@
+This is a commentary to go with the powerrating.py program.  This is part of a bigger project so a better write up will be included later.
+
+The goal of the project is to predict the result of a football match with a 90% or better accuracy.
+
+The goal powerrating.py program is to examine whether power ratings can be used to predict results.
+
+To find the power rating, every team starts with a value of 20 at the start of the season, so for gameweek 1, every team is rated as 20. To find the power rating difference, use this formula :
+
+Difference = HomeTeamPreGameRating - AwayTeamPreGameRating + 0.2
+
+After the game, the power rating is adjusted based on the result according to this formula for the home team:
+
+HomeTeamPostGameRating = HomeTeamPreGameRating + (((HomeGoals-AwayGoals)-Difference)*.1)
+
+And for the away team : 
+
+AwayTeamPostGameRating = AwayTeamPreGameRating - (((HomeGoals-AwayGoals)-Difference)*.1)
+
+These then become the pre game ratings for the next gameweek. Ratings can be distorted by a top team playing a lot of weak oppostion early in the season, so it can take a while for ratings to 'settle down'. 
+For this reason it's common to discard a number of weeks data at the start of the season. Later in the season big changes in ratings are rare. The ratings also seem error tolerant - if there's a mistake in 
+a teams rating it generally resets to what it should be within four to five weeks.  The recommendation is to discard the first 10 weeks of power ratings, and only count differences of +/-.8 or greater as significant. 
+
+To generate predictions I used the results from the 2016/17 and 2017/18 season for the top tier leagues in England, Scotland, France, Germany, Italy and Spain.  As can be seen in powerrating.xls, 
+at a 0.8 threshold, out of 1219 predictions 64% were correct - 68% of home predictions and 58% of away predictions.
+
+The author of this (http://www.football-data.co.uk/blog/power_ratings.php) blog post notes : 
+
+"When Paul Steele first tested his Power Ratings for predictability (seasons 1994/95 to 1998/99) his top 700 home and away predictions showed a success rate of 73% and 55% respectively. A clue as to how lucky this
+might have been can be found in comparing these figures to those he subsequently found for the 1997/98 to 2001/02 seasons which he published in his book. These had fallen to 67% and 46%. My top 700 predictions had success rates of 60% and 44%."
+ 
+My results are broadly similar, though my success rate is slightly higher.   My data selection is slightly different - I'm using all matches above the threshold, rather than the 700 with the highest score.  If I use a threshold of 1.2,
+I end up with 727 games and 71% success rate.  The home success rate is 75% and the away success rate 64%, so even higher than others recorded.  This might be explained by the fact that I'm using data from the top leagues only,
+and there's typically more variability in the lower leagues. 
+ 
+By adjusting the threshold further I can get better accuracy, but I really need to move to handicap predictions to get the results I need.  With a +1 handicap (win or draw) 
+at a threshold of 1.4 I can get my desired 90% success rate, but this doesn't really satisfy the spec of the project.
+
+
+
+Explanation of data values in powerrating.xls
+
+ 
+Threshold Value	- The input value for Difference where a prediction is considered to be valid.
+
+# Predictions	- The amount of predictions above the threshold.
+
+# Correct Home	- The number of correct home predictions.
+
+# Correct Away	- The number of correct away predictions.
+
+# Wrong Home	- The number of incorrect home predictions.
+
+# Wrong Away	- The number of incorrect away predictions.
+
+% Correct		- The overall percentage of correct predictions.
+
+% Correct Home	- The percentage of correct home predictions.
+
+% Correct Away	- The percentage of correct away predictions.
+
+% +1 Pred		- The overall percentage of predictions that would have been correct with a +1 goal handicap.
+
+% +1 Home Handicap	- The percentage of home predictions that would have been correct with a +1 goal handicap.
+
+% +1 Away Handicap	- The percentage of away predictions that would have been correct with a +1 goal handicap.
+
+% +2 Pred			- The overall percentage of predictions that would have been correct with a +2 goal handicap.
+
+% +2 Home Handicap	- The percentage of home predictions that would have been correct with a +2 goal handicap.
+
+% +2 Away Handicap	- The percentage of away predictions that would have been correct with a +2 goal handicap.
+
+
+
+Explanation of data values in english2016.csv
+
+
+Date		- The date the match was played. (dd/mm/yy)
+
+HomeTeam	- The name of the home team.
+
+AwayTeam	- The name of the away team.
+
+FTHG	- Full Time Home Team Goals
+
+FTAG	- Full Time Away Team Goals
+
+FTR		- Full Time Result (H=Home Win, D=Draw, A=Away Win)
+
+HTHG	- Half Time Home Team Goals
+
+HTAG	- Half Time Away Team Goals
+
+HTR		- Half Time Result (H=Home Win, D=Draw, A=Away Win)
+
+HS		- Home Team Shots
+
+AS		- Away Team Shots
+
+HST		- Home Team Shots on Target
+
+AST		- Away Team Shots on Target
+
+HF		- Home Team Fouls Committed
+
+AF		- Away Team Fouls Committed
+
+HC		- Home Team Corners
+
+AC		- Away Team Corners
+
+HY		- Home Team Yellow Cards
+
+AY		- Away Team Yellow Cards
+
+HR		- Home Team Red Cards
+
+AR		- Away Team Red Cards
+
+HomeRating	- Home Team's Pre Match Rating
+
+AwayRating	- Away Team's Pre Match Rating
+
+Difference  - HomeRating - AwayRating + 0.2
+	
+PhomeRating	- HomeRating + (((FTHG-FTAG)-Difference)*.1)
+
+PawayRating	- AwayRating - (((FTHG-FTAG)-Difference)*.1)
+
+CorrPred	- 1 for a correct prediction, 0 for incorrect.
+
+h1 - h6	 	- Used in my excel formulas to help generate ratings.
+
+a1 - a6		- Used in my excel formulas to help generate ratings.
