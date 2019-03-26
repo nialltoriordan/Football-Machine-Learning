@@ -1,8 +1,8 @@
 This is a commentary to go with the powerrating.py program.  This is part of a bigger project so a better write up will be included later.
 
-The goal of the project is to predict the result of a football match with a 90% or better accuracy.
+The goal of the project is to predict the result of a football match with a 90% or better accuracy.  I plan on doing this project badly; rather than research what machine learning approachs have shown success in this area and build on their work, I'm going to try to apply my own ideas first, examine how they perform, and compare them to similar approaches by other people.
 
-The goal powerrating.py program is to examine whether power ratings can be used to predict results.
+The goal of powerrating.py program is to examine whether power ratings can be used to predict results.  Below is a quick summary of how I approached the task and how my work compared to others.
 
 To find the power rating, every team starts with a value of 20 at the start of the season, so for gameweek 1, every team is rated as 20. To find the power rating difference, use this formula :
 
