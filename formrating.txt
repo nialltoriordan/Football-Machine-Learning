@@ -1,0 +1,42 @@
+Note : this is part of a bigger project with a write up to follow.  The first part is summarised in powerrating.txt.
+
+The second part of the project focuses on feature generation - I've seperated generating features from the third part of the project which will be applying machine learning algorithms.  These new features can be seen if fullfeatures.csv.  Most of them are self explanatory; explanations for Form and PPower ratings are below.
+
+As a bit of an aside here I've manually played around with the threshold values of a couple of my new features (Form and PPower) to see if they improve my prediction accuracy.  The result seems to be a minor improvement - at a prating level of 1.2 and levels of Form and PPower slightly above average, I seem to get an accuracy improvement of about 3%. 
+
+At this point it's probably worth noting that though the goal of the project is to predict with an accuracy greater than 90%, I should probably also be aiming to predict a reasonable amount of matches per year.  At the moment my 90% accuracy threshold is around 1.8 for power rating, 9 for form and 3 for ppower.  That leaves me just 71 predictions from 2,902 games (approx. 2.4%) from six leagues over a two year period.  What use is a prediction system if you can only predict a neglible about of games?
+
+Most of the leagues studied have 38 gameweeks of 10 games each. 5% of 2,902 games leaves me a target of approx. 145 games over a 2 year period.  This averages at around 2.7 games per week studied.  The 145 game prediction threshold occurs at a prating of 1.6, 6 for form and 2.5 for PPower.  Accuracy is 80% at these levels.  The +1 handicap accuracy is slightly above the 90% accuacy goal, but again, doesn't satisfy the spec of the project.
+
+
+
+Form Rating is calculated by looking at the last six league games a team has played and assigning points based on the result.  A loss earns 0 points.  Otherwise : 
+
+Home win 3
+Home draw 1
+Away win 5
+Away draw 2
+
+The six values are totaled, and only teams with a rating of 5 or higher are considered.  Using only form as a rating system Paul Steele got the following results : 
+
+Home win 64.37%
+Draw 28.23%
+Away win 41.15%
+
+In contrast, on average Premier League teams consistently win around 46.2% of home games, while the draw occurs around 27.52% of the time and the away team are victorious in 26.32% of games.
+
+So the results are better than chance, but nowhere near my target.  Paul Steele tested this form rating system with different values and different thresholds and found the above was the best performing.  To me, a total of 5 seems quite low - one away win in six games would give that result - so I've run repeated tests with different form values.  All of my results (apart from 2 outliers) above the 90% threshold were under this value, so it may be worth exploring.
+
+
+
+PP rating is calculated in a similar way to form.  It strives to give a value for how attacking a team is and how many chances they create.  The formula is : 
+
+pp = ((shots on target *2) + shots off target + corners) / 10
+
+Winning teams get a bonus '1' added to their score for the game.  This is then averaged over the previous six games, and the threshold should be above .5.  Using only ppower as a rating system Paul Steele got the following results : 
+
+Home win 66.77%
+Draw 29.13%
+Away win 46.96%
+
+.5 seems way below the average, so I've again used a variety of values in different tests.  The results again seem promising so this may be useful in the next stage of the project.
